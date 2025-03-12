@@ -1428,13 +1428,8 @@ static void Task_NewGameBirchSpeechSub_WaitForLotad(u8 taskId)
 
 static void Task_NewGameBirchSpeech_AndYouAre(u8 taskId)
 {
-    if (!RunTextPrintersAndIsPrinter0Active())
-    {
-        sStartedPokeBallTask = FALSE;
-        StringExpandPlaceholders(gStringVar4, gText_Birch_AndYouAre);
-        AddTextPrinterForMessage(TRUE);
-        gTasks[taskId].func = Task_NewGameBirchSpeech_StartBirchLotadPlatformFade;
-    }
+    extern void InitPresentation();
+    InitPresentation();
 }
 
 static void Task_NewGameBirchSpeech_StartBirchLotadPlatformFade(u8 taskId)

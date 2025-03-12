@@ -6,7 +6,7 @@ use core::marker::PhantomData;
 use core::ops::{BitOr, Deref, Mul};
 use core::ptr::null_mut;
 
-use derive_more::{Add, Constructor, Div, Mul, Sub};
+use derive_more::{Add, Constructor, Div, From, Mul, Sub};
 
 use crate::charmap::Pkstr;
 use crate::future::sleep;
@@ -21,7 +21,7 @@ pub fn set_gpu_registers(list: &[(u32, &[u32])]) {
     }
 }
 
-#[derive(Debug, Clone, Copy, Add, Mul, Div, Sub, Constructor)]
+#[derive(Debug, Clone, Copy, Add, Mul, Div, Sub, Constructor, From)]
 pub struct Vec2D<T> {
     pub x: T,
     pub y: T,
@@ -46,7 +46,7 @@ impl<T: Mul + Copy> Vec2D<T> {
     }
 }
 
-#[derive(Debug, Clone, Copy, Add, Mul, Div, Sub, Constructor)]
+#[derive(Debug, Clone, Copy, Add, Mul, Div, Sub, Constructor, From)]
 pub struct Rect<T> {
     pub x: T,
     pub y: T,
@@ -196,6 +196,7 @@ pub struct Tileset<Buf: Buffer<TileBitmap4bpp>> {
     pub palette: BgPalette,
 }
 
+#[derive(Clone, Copy)]
 pub struct TilesetHandle {
     pub char_base: u16,
     pub offset: u16,
@@ -616,6 +617,24 @@ impl PokemonSpritePic {
         }
     }
 
+    pub fn new_by_index(poke: u16, slot: u8) -> PokemonSpritePic {
+        unsafe {
+            let sprite_index = CreateMonPicSprite_Affine(
+                poke,
+                0,
+                0xFF,
+                MON_PIC_AFFINE_FRONT as _,
+                0,
+                0,
+                slot,
+                TAG_NONE as _,
+            );
+            PokemonSpritePic {
+                sprite: SpriteHandle { sprite_index },
+            }
+        }
+    }
+
     pub fn handle(&mut self) -> &mut SpriteHandle {
         &mut self.sprite
     }
@@ -664,7 +683,7 @@ pub struct WindowHandle {
 
 impl WindowHandle {
     pub fn fill(&self, fill: u8) {
-        unsafe { FillWindowPixelBuffer(self.index.into(), fill) };
+        unsafe { FillWindowPixelBuffer(self.index.into(), fill | fill << 4) };
     }
 
     pub fn fill_rect(&self, fill: u8, rect: Rect<u16>) {

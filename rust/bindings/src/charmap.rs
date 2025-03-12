@@ -63,10 +63,14 @@ const fn map(char: u8) -> u8 {
         b'<' => 0x85,
         b')' => 0x5D,
         b'(' => 0x5C,
-        b',' => 0x35,
+        b',' => 0xB8,
+        b'=' => 0x35,
         b'+' => 0x2E,
         b'&' => 0x2D,
         b'/' => 0xBA,
+        b'"' => 0xB1,
+        b'\'' => 0xB4,
+        b'\n' => 0xFE,
         0 => 0xFF,
         _ => 0xAE,
     }
@@ -76,18 +80,21 @@ const fn map_special(bytes: &[u8]) -> &'static [u8] {
     match bytes {
         b"PAUSE" => &[0xFC, 0x09],
         b"PARAGRAPH" | b"P" => &[0xFB],
+        b"PKMN" => &[0xCA, 0xE3, 0xDF, 0x1B, 0xE1, 0xE3, 0xE2],
         _ => panic!("Invalid special char"),
     }
 }
 
 #[macro_export]
 macro_rules! pkstr {
-    ($str:literal) => {{
-        use $crate::charmap::*;
-        const LEN: usize = pkstr_bytes_len($str);
-        const ARR: [u8; LEN] = pkstr_build::<LEN>($str);
-        unsafe { pkstr_raw(&ARR) }
-    }};
+    ($str:literal) => {
+        const {
+            use $crate::charmap::*;
+            const LEN: usize = pkstr_bytes_len($str);
+            const ARR: [u8; LEN] = pkstr_build::<LEN>($str);
+            unsafe { pkstr_raw(&ARR) }
+        }
+    };
 }
 
 const fn index_of(input: &[u8], check: u8) -> usize {
