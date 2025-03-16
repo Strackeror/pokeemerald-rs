@@ -1,3 +1,4 @@
+![alt text](assets/pokeemerald-7.png)
 ## Panic handler and allocator
 ### panic.rs
 ```rs

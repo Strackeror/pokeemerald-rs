@@ -1,3 +1,4 @@
+![alt text](assets/pokeemerald-10.png)
 ## Async and state machines
 
 ```c

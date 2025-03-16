@@ -1,3 +1,4 @@
+![alt text](assets/pokeemerald-8.png)
 ## Unsafe
 ### sprite.c
 ```c

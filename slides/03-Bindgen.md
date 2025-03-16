@@ -1,3 +1,5 @@
+![alt text](assets/pokeemerald-6.png)
+
 ## Bindgen
 
 ### header.h

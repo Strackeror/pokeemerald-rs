@@ -1,3 +1,5 @@
+![alt text](assets/pokeemerald-6.png)
+
 ## Calling C from Rust
 ### lib.c
 ```c

@@ -1,4 +1,7 @@
+![alt text](assets/pokeemerald-6.png)
+
 ## Calling Rust From C
+
 
 ### Cargo.toml
 ```toml

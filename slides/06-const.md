@@ -1,3 +1,4 @@
+![alt text](assets/pokeemerald-9.png)
 ## const
 ```rust
 const fn map(char: u8) -> u8 {
