@@ -10,9 +10,17 @@ fn main() {
         .unwrap();
     let include_path = base_path.join("include");
     let include_path = include_path.to_str().unwrap();
+    let stub_include_path = env::current_dir()
+        .unwrap()
+        .canonicalize()
+        .unwrap()
+        .join("stub-includes");
+    let stub_include_path = stub_include_path.to_str().unwrap();
+
     let builder = bindgen::Builder::default()
         .header("src/wrapper.h")
-        .clang_args(["-I/usr/arm-none-eabi/include", "-iquote", include_path])
+        .clang_args(["-iquote", include_path])
+        .clang_args(["-I", stub_include_path])
         .clang_args(["--target=arm-none-eabi", "-mthumb", "-march=armv4t"])
         .allowlist_file(".*/list_menu.h")
         .allowlist_file(".*/pokemon.h")
